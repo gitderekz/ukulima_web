@@ -1,0 +1,47 @@
+{
+  "development": {
+    "username": "root",
+    "password": "",
+    "database": "ukulima_erp",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql",
+    "logging": true,
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "test": {
+    "username": "root",
+    "password": "",
+    "database": "ukulima_erp_test",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "dialect": "mysql",
+    "logging": false,
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "production": {
+    "username": "your_production_username",
+    "password": "your_production_password",
+    "database": "your_production_database",
+    "host": "your_production_host",
+    "port": 3306,
+    "dialect": "mysql",
+    "logging": false,
+    "pool": {
+      "max": 10,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  }
+}
