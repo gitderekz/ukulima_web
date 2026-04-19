@@ -23,6 +23,17 @@ export default function(sequelize) {
         key: 'id',
       },
     },
+    sourceBaleIds: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      get() {
+        const rawValue = this.getDataValue('sourceBaleIds');
+        return rawValue ? JSON.parse(rawValue) : null;
+      },
+      set(value) {
+        this.setDataValue('sourceBaleIds', value ? JSON.stringify(value) : null);
+      },
+    },
   }, {
     tableName: 'rebale_bales',
     timestamps: true,

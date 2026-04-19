@@ -8,6 +8,7 @@ const router = express.Router();
 router.use(protect);
 
 router.get('/', pricesController.getAllPrices);
+router.get('/current', pricesController.getCurrentPrices);
 router.get('/:id', pricesController.getPriceById);
 router.get('/current/:cropId/:gradeId', pricesController.getCurrentPrice);
 router.post('/', pricesController.createPrice);

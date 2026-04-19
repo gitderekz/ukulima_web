@@ -296,6 +296,9 @@ export const pricesAPI = {
   getByCropAndGrade: (cropId: string, gradeId: string) =>
     fetchAPI(`/prices?cropId=${cropId}&gradeId=${gradeId}`),
 
+  getCurrentPrice: (cropId: string, gradeId: string) =>
+    fetchAPI(`/prices/current/${cropId}/${gradeId}`),
+
   getCurrentPrices: () => fetchAPI('/prices/current'),
 
   getById: (id: string) => fetchAPI(`/prices/${id}`),
@@ -375,19 +378,108 @@ export const purchasesAPI = {
     }),
 };
 
-// Rebales API
+// Bales API
+// export const balesAPI = {
+//   getAll: () => fetchAPI('/bales'),
+
+//   getByStatus: (status: string) =>
+//     fetchAPI(`/bales?status=${status}`),
+
+//   getAvailable: () =>
+//     fetchAPI('/bales?status=purchased'),
+
+//   getById: (id: string) => fetchAPI(`/bales/${id}`),
+
+//   create: (data: any) =>
+//     fetchAPI('/bales', {
+//       method: 'POST',
+//       body: JSON.stringify(data),
+//     }),
+
+//   update: (id: string, data: any) =>
+//     fetchAPI(`/bales/${id}`, {
+//       method: 'PUT',
+//       body: JSON.stringify(data),
+//     }),
+
+//   delete: (id: string) =>
+//     fetchAPI(`/bales/${id}`, {
+//       method: 'DELETE',
+//     }),
+// };
+export const balesAPI = {
+  getAll: (status?: string, purchaseId?: string) => {
+    const params = new URLSearchParams();
+    if (status) params.append('status', status);
+    if (purchaseId) params.append('purchaseId', purchaseId);
+    const query = params.toString();
+    return fetchAPI(`/bales${query ? `?${query}` : ''}`);
+  },
+
+  getAvailable: () =>
+    fetchAPI('/bales/available'),
+
+  getById: (id: string) => fetchAPI(`/bales/${id}`),
+
+  create: (data: any) =>
+    fetchAPI('/bales', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  update: (id: string, data: any) =>
+    fetchAPI(`/bales/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
+  delete: (id: string) =>
+    fetchAPI(`/bales/${id}`, {
+      method: 'DELETE',
+    }),
+};
+
+
+// Rebales API (enhanced)
 export const rebalesAPI = {
-  getAll: () => fetchAPI('/rebales'),
+  getAll: (status?: string, startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams();
+    if (status) params.append('status', status);
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    const query = params.toString();
+    return fetchAPI(`/rebales${query ? `?${query}` : ''}`);
+  },
 
   getByStatus: (status: string) =>
     fetchAPI(`/rebales?status=${status}`),
 
   getById: (id: string) => fetchAPI(`/rebales/${id}`),
 
+  getStats: (startDate?: string, endDate?: string) => {
+    const params = new URLSearchParams();
+    if (startDate) params.append('startDate', startDate);
+    if (endDate) params.append('endDate', endDate);
+    const query = params.toString();
+    return fetchAPI(`/rebales/stats${query ? `?${query}` : ''}`);
+  },
+
   create: (data: any) =>
     fetchAPI('/rebales', {
       method: 'POST',
       body: JSON.stringify(data),
+    }),
+
+  createBatch: (rebales: any[]) =>
+    fetchAPI('/rebales/batch', {
+      method: 'POST',
+      body: JSON.stringify({ rebales }),
+    }),
+
+  updateStatus: (id: string, status: string) =>
+    fetchAPI(`/rebales/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
     }),
 
   update: (id: string, data: any) =>
@@ -403,8 +495,12 @@ export const rebalesAPI = {
 };
 
 // Transports API
+// Transports API
 export const transportsAPI = {
-  getAll: () => fetchAPI('/transports'),
+  getAll: (status?: string) => {
+    const query = status ? `?status=${status}` : '';
+    return fetchAPI(`/transports${query}`);
+  },
 
   getByStatus: (status: string) =>
     fetchAPI(`/transports?status=${status}`),

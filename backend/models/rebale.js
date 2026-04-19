@@ -12,6 +12,11 @@ export default function(sequelize) {
       allowNull: false,
       unique: true,
     },
+    receiptNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     cropId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -56,12 +61,31 @@ export default function(sequelize) {
         key: 'id',
       },
     },
+    // transportId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    //   references: {
+    //     model: 'transports',
+    //     key: 'id',
+    //   },
+    // },
+    sourceBaleIds: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      get() {
+        const rawValue = this.getDataValue('sourceBaleIds');
+        return rawValue ? JSON.parse(rawValue) : null;
+      },
+      set(value) {
+        this.setDataValue('sourceBaleIds', value ? JSON.stringify(value) : null);
+      },
+    },
     rebaleDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('stored', 'transported'),
+      type: DataTypes.ENUM('stored', 'transported', 'completed', 'pending'),
       allowNull: false,
       defaultValue: 'stored',
     },

@@ -11,6 +11,7 @@ router.get('/', transportsController.getAllTransports);
 router.get('/stats', transportsController.getTransportStats);
 router.get('/:id', transportsController.getTransportById);
 router.post('/', transportsController.createTransport);
+router.put('/:id', transportsController.updateTransport);
 router.delete('/:id', transportsController.deleteTransport);
 
 export default router;

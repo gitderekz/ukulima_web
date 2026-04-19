@@ -14,7 +14,7 @@ export default function(sequelize) {
     },
     rebaleId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'rebales',
         key: 'id',
@@ -60,25 +60,34 @@ export default function(sequelize) {
         key: 'id',
       },
     },
-    origin: {
+    originLocationId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'locatons',
+        model: 'locations',
         key: 'id',
       },
     },
-    destination: {
+    destinationLocationId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'locatons',
+        model: 'locations',
         key: 'id',
       },
+    },
+    status: {
+      type: DataTypes.ENUM('in_transit', 'delivered', 'cancelled'),
+      allowNull: false,
+      defaultValue: 'in_transit',
     },
     transportDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
+    },
+    arrivalDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: true,
     },
   }, {
     tableName: 'transports',

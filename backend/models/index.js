@@ -14,6 +14,7 @@ import createBaleModel from './bale.js';
 import createRebaleModel from './rebale.js';
 import createRebaleBaleModel from './rebalebale.js';
 import createTransportModel from './transport.js';
+import createTransportRebaleModel from './transportrebale.js'; // Add this
 import createLoanDeductionModel from './loandeduction.js';
 import createSettingModel from './setting.js';
 import createAuditLogModel from './auditlog.js';
@@ -35,6 +36,7 @@ const Bale = createBaleModel(sequelize);
 const Rebale = createRebaleModel(sequelize);
 const RebaleBale = createRebaleBaleModel(sequelize);
 const Transport = createTransportModel(sequelize);
+const TransportRebale = createTransportRebaleModel(sequelize); // Add this
 const LoanDeduction = createLoanDeductionModel(sequelize);
 const Setting = createSettingModel(sequelize);
 const AuditLog = createAuditLogModel(sequelize);
@@ -129,8 +131,8 @@ RebaleBale.belongsTo(Bale, { foreignKey: 'baleId' });
 Bale.hasMany(RebaleBale, { foreignKey: 'baleId' });
 
 // Transport associations
-Transport.belongsTo(Rebale, { foreignKey: 'rebaleId' });
-Rebale.hasMany(Transport, { foreignKey: 'rebaleId' });
+// Transport.belongsTo(Rebale, { foreignKey: 'rebaleId' });
+// Rebale.hasMany(Transport, { foreignKey: 'rebaleId' });
 
 Transport.belongsTo(User, { as: 'buyer', foreignKey: 'buyerId' });
 User.hasMany(Transport, { as: 'transportsAsBuyer', foreignKey: 'buyerId' });
@@ -138,11 +140,23 @@ User.hasMany(Transport, { as: 'transportsAsBuyer', foreignKey: 'buyerId' });
 Transport.belongsTo(Warehouse, { foreignKey: 'warehouseId' });
 Warehouse.hasMany(Transport, { foreignKey: 'warehouseId' });
 
-Transport.belongsTo(Location, {as: 'originLocation', foreignKey: 'origin' });
-Location.hasMany(Transport, {as: 'originTransports', foreignKey: 'origin' });
+Transport.belongsTo(Location, {as: 'originLocation', foreignKey: 'originLocationId' });
+Location.hasMany(Transport, {as: 'originTransports', foreignKey: 'originLocationId' });
 
-Transport.belongsTo(Location, { as: 'destinationLocation', foreignKey: 'destination' });
-Location.hasMany(Transport, { as: 'destinationTransports', foreignKey: 'destination' });
+Transport.belongsTo(Location, { as: 'destinationLocation', foreignKey: 'destinationLocationId' });
+Location.hasMany(Transport, { as: 'destinationTransports', foreignKey: 'destinationLocationId' });
+
+
+// Transport-Rebale many-to-many association
+Transport.belongsToMany(Rebale, { through: TransportRebale, foreignKey: 'transportId', otherKey: 'rebaleId' });
+Rebale.belongsToMany(Transport, { through: TransportRebale, foreignKey: 'rebaleId', otherKey: 'transportId' });
+
+// TransportRebale associations (junction table)
+TransportRebale.belongsTo(Transport, { foreignKey: 'transportId' });
+Transport.hasMany(TransportRebale, { foreignKey: 'transportId' });
+
+TransportRebale.belongsTo(Rebale, { foreignKey: 'rebaleId' });
+Rebale.hasMany(TransportRebale, { foreignKey: 'rebaleId' });
 
 // LoanDeduction associations
 LoanDeduction.belongsTo(Purchase, { foreignKey: 'purchaseId' });
@@ -175,6 +189,7 @@ export const db = {
   Rebale,
   RebaleBale,
   Transport,
+  TransportRebale, // Add this
   LoanDeduction,
   Setting,
   AuditLog,
@@ -199,6 +214,7 @@ export {
   Rebale,
   RebaleBale,
   Transport,
+  TransportRebale, // Add this
   LoanDeduction,
   Setting,
   AuditLog,

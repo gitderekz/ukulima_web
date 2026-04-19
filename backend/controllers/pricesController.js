@@ -42,7 +42,7 @@ export const getPriceById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const price = await db.Price.findByPk(id, {
+    const price = await db.CropGradePrice.findByPk(id, {
       include: [
         {
           model: db.Crop,
@@ -80,7 +80,7 @@ export const getCurrentPrice = async (req, res) => {
   try {
     const { cropId, gradeId } = req.params;
 
-    const price = await db.Price.findOne({
+    const price = await db.CropGradePrice.findOne({
       where: {
         cropId,
         gradeId,
@@ -121,6 +121,50 @@ export const getCurrentPrice = async (req, res) => {
   }
 };
 
+
+// Get current prices (most recent for each crop-grade pair)
+export const getCurrentPrices = async (req, res) => {
+  try {
+    // Get the latest price for each crop-grade combination
+    const prices = await db.CropGradePrice.findAll({
+      include: [
+        {
+          model: db.Crop,
+          attributes: ['id', 'name', 'code'],
+        },
+        {
+          model: db.Grade,
+          attributes: ['id', 'name', 'code'],
+        },
+      ],
+      order: [['updatedAt', 'DESC']],
+    });
+
+    // Deduplicate to get only the latest per crop-grade
+    const latestPricesMap = new Map();
+    prices.forEach(price => {
+      const key = `${price.cropId}-${price.gradeId}`;
+      if (!latestPricesMap.has(key)) {
+        latestPricesMap.set(key, price);
+      }
+    });
+
+    const latestPrices = Array.from(latestPricesMap.values());
+
+    res.json({
+      success: true,
+      data: latestPrices,
+      total: latestPrices.length,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch current prices',
+      error: error.message,
+    });
+  }
+};
+
 // Create price
 export const createPrice = async (req, res) => {
   try {
@@ -151,7 +195,7 @@ export const createPrice = async (req, res) => {
       });
     }
 
-    const newPrice = await db.Price.create({
+    const newPrice = await db.CropGradePrice.create({
       id: uuidv4(),
       cropId,
       gradeId,
@@ -179,7 +223,7 @@ export const updatePrice = async (req, res) => {
     const { id } = req.params;
     const { price, effectiveDate, cropId, gradeId } = req.body;
 
-    const priceRecord = await db.Price.findByPk(id);
+    const priceRecord = await db.CropGradePrice.findByPk(id);
 
     if (!priceRecord) {
       return res.status(404).json({
@@ -236,7 +280,7 @@ export const deletePrice = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const price = await db.Price.findByPk(id);
+    const price = await db.CropGradePrice.findByPk(id);
 
     if (!price) {
       return res.status(404).json({
@@ -259,3 +303,215 @@ export const deletePrice = async (req, res) => {
     });
   }
 };
+// ------------------------------------
+
+// // Get all prices
+// export const getAllPrices = async (req, res) => {
+//   try {
+//     const { cropId, gradeId } = req.query;
+
+//     const where = {};
+//     if (cropId) where.cropId = cropId;
+//     if (gradeId) where.gradeId = gradeId;
+
+//     const prices = await db.CropGradePrice.findAll({
+//       where,
+//       include: [
+//         {
+//           model: db.Crop,
+//           attributes: ['id', 'name', 'code'],
+//         },
+//         {
+//           model: db.Grade,
+//           attributes: ['id', 'name', 'code'],
+//         },
+//       ],
+//       order: [['updatedAt', 'DESC']],
+//     });
+
+//     res.json({
+//       success: true,
+//       data: prices,
+//       total: prices.length,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch prices',
+//       error: error.message,
+//     });
+//   }
+// };
+
+// // Get current prices (most recent for each crop-grade pair)
+// export const getCurrentPrices = async (req, res) => {
+//   try {
+//     // Get the latest price for each crop-grade combination
+//     const prices = await db.CropGradePrice.findAll({
+//       include: [
+//         {
+//           model: db.Crop,
+//           attributes: ['id', 'name', 'code'],
+//         },
+//         {
+//           model: db.Grade,
+//           attributes: ['id', 'name', 'code'],
+//         },
+//       ],
+//       order: [['updatedAt', 'DESC']],
+//     });
+
+//     // Deduplicate to get only the latest per crop-grade
+//     const latestPricesMap = new Map();
+//     prices.forEach(price => {
+//       const key = `${price.cropId}-${price.gradeId}`;
+//       if (!latestPricesMap.has(key)) {
+//         latestPricesMap.set(key, price);
+//       }
+//     });
+
+//     const latestPrices = Array.from(latestPricesMap.values());
+
+//     res.json({
+//       success: true,
+//       data: latestPrices,
+//       total: latestPrices.length,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch current prices',
+//       error: error.message,
+//     });
+//   }
+// };
+
+// // Get price by ID
+// export const getPriceById = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const price = await db.CropGradePrice.findByPk(id, {
+//       include: [
+//         {
+//           model: db.Crop,
+//           attributes: ['id', 'name', 'code'],
+//         },
+//         {
+//           model: db.Grade,
+//           attributes: ['id', 'name', 'code'],
+//         },
+//       ],
+//     });
+
+//     if (!price) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Price not found',
+//       });
+//     }
+
+//     res.json({
+//       success: true,
+//       data: price,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to fetch price',
+//       error: error.message,
+//     });
+//   }
+// };
+
+// // Create price
+// export const createPrice = async (req, res) => {
+//   try {
+//     const { cropId, gradeId, price } = req.body;
+
+//     if (!cropId || !gradeId || !price) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Crop ID, grade ID, and price are required',
+//       });
+//     }
+
+//     const newPrice = await db.CropGradePrice.create({
+//       cropId,
+//       gradeId,
+//       price,
+//     });
+
+//     res.status(201).json({
+//       success: true,
+//       message: 'Price created successfully',
+//       data: newPrice,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to create price',
+//       error: error.message,
+//     });
+//   }
+// };
+
+// // Update price
+// export const updatePrice = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { price } = req.body;
+
+//     const priceRecord = await db.CropGradePrice.findByPk(id);
+
+//     if (!priceRecord) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Price not found',
+//       });
+//     }
+
+//     await priceRecord.update({ price });
+
+//     res.json({
+//       success: true,
+//       message: 'Price updated successfully',
+//       data: priceRecord,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to update price',
+//       error: error.message,
+//     });
+//   }
+// };
+
+// // Delete price
+// export const deletePrice = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     const price = await db.CropGradePrice.findByPk(id);
+
+//     if (!price) {
+//       return res.status(404).json({
+//         success: false,
+//         message: 'Price not found',
+//       });
+//     }
+
+//     await price.destroy();
+
+//     res.json({
+//       success: true,
+//       message: 'Price deleted successfully',
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: 'Failed to delete price',
+//       error: error.message,
+//     });
+//   }
+// };

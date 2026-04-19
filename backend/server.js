@@ -24,6 +24,7 @@ import purchasesRoutes from './routes/purchasesRoutes.js';
 import rebalesRoutes from './routes/rebalesRoutes.js';
 import transportsRoutes from './routes/transportsRoutes.js';
 import reportsRoutes from './routes/reportsRoutes.js';
+import balesRoutes from './routes/balesRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -82,6 +83,7 @@ app.use('/api/purchases', purchasesRoutes);
 app.use('/api/rebales', rebalesRoutes);
 app.use('/api/transports', transportsRoutes);
 app.use('/api/reports', reportsRoutes);
+app.use('/api/bales', balesRoutes);
 
 // 404 handler
 app.use((req, res) => {

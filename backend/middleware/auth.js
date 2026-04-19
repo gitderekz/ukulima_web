@@ -48,11 +48,16 @@ export const protect = async (req, res, next) => {
       });
     }
 
-    // Remove password from user object
-    const { password, ...userWithoutPassword } = user;
+    // // Remove password from user object
+    // const { password, ...userWithoutPassword } = user;
+    // // Attach user to request
+    // req.user = userWithoutPassword;
 
-    // Attach user to request
-    req.user = userWithoutPassword;
+    // ✅ convert to plain object
+    const userPlain = user.get({ plain: true });
+    // remove password
+    delete userPlain.password;
+    req.user = userPlain;
 
     next();
   } catch (error) {
