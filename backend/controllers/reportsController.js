@@ -34,7 +34,7 @@ export const generatePurchasesReport = async (req, res) => {
         },
         {
           model: db.LoanDeduction,
-          attributes: ['id', 'amount'],
+          attributes: ['id', 'deductedAmount'],
         },
       ],
       order: [['purchaseDate', 'DESC']],
@@ -258,7 +258,7 @@ export const generateLoansReport = async (req, res) => {
         },
         {
           model: db.LoanDeduction,
-          attributes: ['id', 'amount', 'createdAt'],
+          attributes: ['id', 'deductedAmount', 'createdAt'],
         },
       ],
       order: [['createdAt', 'DESC']],

@@ -20,6 +20,11 @@ export default function(sequelize) {
       allowNull: false,
       unique: true,
     },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     phone: {
       type: DataTypes.STRING,
       allowNull: false,
