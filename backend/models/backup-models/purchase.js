@@ -1,11 +1,10 @@
-
-// --->backend/models/purchase.js (Modified)
 import { DataTypes } from 'sequelize';
 
 export default function(sequelize) {
   const Purchase = sequelize.define('Purchase', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     receiptNumber: {
@@ -14,7 +13,7 @@ export default function(sequelize) {
       unique: true,
     },
     farmerId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'farmers',
@@ -65,24 +64,6 @@ export default function(sequelize) {
     purchaseDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
-    },
-    // Mobile sync tracking columns
-    originalDeviceId: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    originalLocalId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    syncSource: {
-      type: DataTypes.ENUM('web', 'mobile'),
-      allowNull: false,
-      defaultValue: 'web',
-    },
-    syncedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
     },
   }, {
     tableName: 'purchases',

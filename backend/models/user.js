@@ -66,6 +66,22 @@ export default function(sequelize) {
         key: 'id',
       },
     },
+    cppId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'locations',
+        key: 'id',
+      },
+    },
+    extensionId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'locations',
+        key: 'id',
+      },
+    },
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -74,6 +90,13 @@ export default function(sequelize) {
   }, {
     tableName: 'users',
     timestamps: true,
+
+    indexes: [
+      { fields: ['code'], unique: true },
+      { fields: ['locationId'] },
+      { fields: ['cppId'] },
+      { fields: ['extensionId'] }
+    ]
   });
 
   return User;

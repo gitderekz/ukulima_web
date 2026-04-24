@@ -56,6 +56,12 @@ Location.hasMany(Warehouse, { foreignKey: 'locationId' });
 User.belongsTo(Location, { foreignKey: 'locationId' });
 Location.hasMany(User, { foreignKey: 'locationId' });
 
+User.belongsTo(Location, {as: 'cpp', foreignKey: 'cppId' });
+Location.hasMany(User, {as: 'cppUsers', foreignKey: 'cppId' });
+
+User.belongsTo(Location, {as: 'extension', foreignKey: 'extensionId' });
+Location.hasMany(User, {as: 'extensionUsers', foreignKey: 'extensionId' });
+
 User.belongsTo(Role, { foreignKey: 'roleId' });
 Role.hasMany(User, { foreignKey: 'roleId' });
 
@@ -72,6 +78,12 @@ Grade.hasMany(CropGradePrice, { foreignKey: 'gradeId' });
 // Farmer associations
 Farmer.belongsTo(Location, { foreignKey: 'locationId' });
 Location.hasMany(Farmer, { foreignKey: 'locationId' });
+
+Farmer.belongsTo(Location, {as: 'cpp', foreignKey: 'cppId' });
+Location.hasMany(Farmer, {as: 'cppFarmers', foreignKey: 'cppId' });
+
+Farmer.belongsTo(Location, {as: 'extension', foreignKey: 'extensionId' });
+Location.hasMany(Farmer, {as: 'extensionFarmers', foreignKey: 'extensionId' });
 
 // FarmerLoan associations
 FarmerLoan.belongsTo(Farmer, { foreignKey: 'farmerId' });

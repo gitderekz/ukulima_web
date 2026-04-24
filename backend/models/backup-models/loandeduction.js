@@ -1,15 +1,14 @@
-
-// --->backend/models/loandeduction.js (Modified)
 import { DataTypes } from 'sequelize';
 
 export default function(sequelize) {
   const LoanDeduction = sequelize.define('LoanDeduction', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     purchaseId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'purchases',
@@ -17,7 +16,7 @@ export default function(sequelize) {
       },
     },
     farmerLoanId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'farmer_loans',
@@ -31,24 +30,6 @@ export default function(sequelize) {
     deductionDate: {
       type: DataTypes.DATEONLY,
       allowNull: false,
-    },
-    // Mobile sync tracking columns
-    originalDeviceId: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    originalLocalId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    syncSource: {
-      type: DataTypes.ENUM('web', 'mobile'),
-      allowNull: false,
-      defaultValue: 'web',
-    },
-    syncedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
     },
   }, {
     tableName: 'loan_deductions',

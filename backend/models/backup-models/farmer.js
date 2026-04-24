@@ -1,11 +1,10 @@
-
-// --->backend/models/farmer.js (Modified)
 import { DataTypes } from 'sequelize';
 
 export default function(sequelize) {
   const Farmer = sequelize.define('Farmer', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     firstName: {
@@ -54,24 +53,6 @@ export default function(sequelize) {
       allowNull: false,
       defaultValue: 0,
     },
-    // Mobile sync tracking columns
-    originalDeviceId: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    originalLocalId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    syncSource: {
-      type: DataTypes.ENUM('web', 'mobile'),
-      allowNull: false,
-      defaultValue: 'web',
-    },
-    syncedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
   }, {
     tableName: 'farmers',
     timestamps: true,
@@ -83,7 +64,6 @@ export default function(sequelize) {
       { fields: ['extensionId'] }
     ]
   });
-
 
   return Farmer;
 }

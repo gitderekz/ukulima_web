@@ -3,7 +3,7 @@
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ??
-  'http://localhost:5001/api';
+  'http://192.168.1.152:5000/api';
 
 // Helper function to get auth token
 const getAuthToken = () => {

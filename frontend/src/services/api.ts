@@ -1,4 +1,4 @@
-const API_BASE_URL = (import.meta as any).env.VITE_API_URL || 'http://localhost:5000/api'|| 'http://192.168.1.152:5000/api';
+const API_BASE_URL = (import.meta as any).env.VITE_API_URL || 'http://192.168.1.152:5000/api'|| 'http://192.168.1.152:5000/api';
 
 interface ApiResponse<T> {
   success: boolean;
@@ -348,6 +348,58 @@ export const loansAPI = {
     }),
 };
 
+// Loan Types API (for loan catalog)
+export const loanTypesAPI = {
+  getAll: () => fetchAPI('/loans'),
+
+  getById: (id: string) => fetchAPI(`/loans/${id}`),
+
+  create: (data: any) =>
+    fetchAPI('/loans', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  update: (id: string, data: any) =>
+    fetchAPI(`/loans/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
+  delete: (id: string) =>
+    fetchAPI(`/loans/${id}`, {
+      method: 'DELETE',
+    }),
+};
+
+// Farmer Loans API (for assigned loans)
+export const farmerLoansAPI = {
+  getAll: () => fetchAPI('/farmer-loans'),
+
+  getByFarmerId: (farmerId: string) =>
+    fetchAPI(`/farmer-loans?farmerId=${farmerId}`),
+
+  getById: (id: string) => fetchAPI(`/farmer-loans/${id}`),
+
+  create: (data: any) =>
+    fetchAPI('/farmer-loans', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  update: (id: string, data: any) =>
+    fetchAPI(`/farmer-loans/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
+  delete: (id: string) =>
+    fetchAPI(`/farmer-loans/${id}`, {
+      method: 'DELETE',
+    }),
+};
+
+
 // Purchases API
 export const purchasesAPI = {
   getAll: (status?: string) => {
@@ -560,6 +612,8 @@ export default {
   rolesAPI,
   pricesAPI,
   loansAPI,
+  loanTypesAPI,
+  farmerLoansAPI,
   purchasesAPI,
   rebalesAPI,
   transportsAPI,

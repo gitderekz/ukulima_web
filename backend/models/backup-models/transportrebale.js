@@ -1,15 +1,14 @@
-
-// --->backend/models/transportrebale.js (Modified)
 import { DataTypes } from 'sequelize';
 
 export default function(sequelize) {
   const TransportRebale = sequelize.define('TransportRebale', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     transportId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'transports',
@@ -17,7 +16,7 @@ export default function(sequelize) {
       },
     },
     rebaleId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'rebales',
@@ -28,24 +27,6 @@ export default function(sequelize) {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
-    },
-    // Mobile sync tracking columns
-    originalDeviceId: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    originalLocalId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    syncSource: {
-      type: DataTypes.ENUM('web', 'mobile'),
-      allowNull: false,
-      defaultValue: 'web',
-    },
-    syncedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
     },
   }, {
     tableName: 'transport_rebales',

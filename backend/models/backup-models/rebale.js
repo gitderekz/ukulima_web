@@ -1,25 +1,21 @@
-
-// --->backend/models/bale.js (Modified)
 import { DataTypes } from 'sequelize';
 
 export default function(sequelize) {
-  const Bale = sequelize.define('Bale', {
+  const Rebale = sequelize.define('Rebale', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
-    baleTag: {
+    rebaleTag: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
-    purchaseId: {
-      type: DataTypes.STRING(50),
+    receiptNumber: {
+      type: DataTypes.STRING,
       allowNull: false,
-      references: {
-        model: 'purchases',
-        key: 'id',
-      },
+      unique: true,
     },
     cropId: {
       type: DataTypes.INTEGER,
@@ -37,7 +33,7 @@ export default function(sequelize) {
         key: 'id',
       },
     },
-    mass: {
+    totalMass: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
@@ -57,33 +53,46 @@ export default function(sequelize) {
         key: 'id',
       },
     },
-    status: {
-      type: DataTypes.ENUM('purchased', 'rebaled', 'transported'),
-      allowNull: false,
-      defaultValue: 'purchased',
-    },
-    // Mobile sync tracking columns
-    originalDeviceId: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    originalLocalId: {
+    buyerId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    syncSource: {
-      type: DataTypes.ENUM('web', 'mobile'),
       allowNull: false,
-      defaultValue: 'web',
+      references: {
+        model: 'users',
+        key: 'id',
+      },
     },
-    syncedAt: {
-      type: DataTypes.DATE,
+    // transportId: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: true,
+    //   references: {
+    //     model: 'transports',
+    //     key: 'id',
+    //   },
+    // },
+    sourceBaleIds: {
+      type: DataTypes.TEXT,
       allowNull: true,
+      get() {
+        const rawValue = this.getDataValue('sourceBaleIds');
+        return rawValue ? JSON.parse(rawValue) : null;
+      },
+      set(value) {
+        this.setDataValue('sourceBaleIds', value ? JSON.stringify(value) : null);
+      },
+    },
+    rebaleDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM('stored', 'transported', 'completed', 'pending'),
+      allowNull: false,
+      defaultValue: 'stored',
     },
   }, {
-    tableName: 'bales',
+    tableName: 'rebales',
     timestamps: true,
   });
 
-  return Bale;
+  return Rebale;
 }

@@ -1,15 +1,14 @@
-
-// --->backend/models/rebalebale.js (Modified)
 import { DataTypes } from 'sequelize';
 
 export default function(sequelize) {
   const RebaleBale = sequelize.define('RebaleBale', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     rebaleId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'rebales',
@@ -17,7 +16,7 @@ export default function(sequelize) {
       },
     },
     baleId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'bales',
@@ -34,24 +33,6 @@ export default function(sequelize) {
       set(value) {
         this.setDataValue('sourceBaleIds', value ? JSON.stringify(value) : null);
       },
-    },
-    // Mobile sync tracking columns
-    originalDeviceId: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    originalLocalId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    syncSource: {
-      type: DataTypes.ENUM('web', 'mobile'),
-      allowNull: false,
-      defaultValue: 'web',
-    },
-    syncedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
     },
   }, {
     tableName: 'rebale_bales',

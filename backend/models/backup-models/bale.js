@@ -1,11 +1,10 @@
-
-// --->backend/models/bale.js (Modified)
 import { DataTypes } from 'sequelize';
 
 export default function(sequelize) {
   const Bale = sequelize.define('Bale', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     baleTag: {
@@ -14,7 +13,7 @@ export default function(sequelize) {
       unique: true,
     },
     purchaseId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'purchases',
@@ -61,24 +60,6 @@ export default function(sequelize) {
       type: DataTypes.ENUM('purchased', 'rebaled', 'transported'),
       allowNull: false,
       defaultValue: 'purchased',
-    },
-    // Mobile sync tracking columns
-    originalDeviceId: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    originalLocalId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    syncSource: {
-      type: DataTypes.ENUM('web', 'mobile'),
-      allowNull: false,
-      defaultValue: 'web',
-    },
-    syncedAt: {
-      type: DataTypes.DATE,
-      allowNull: true,
     },
   }, {
     tableName: 'bales',

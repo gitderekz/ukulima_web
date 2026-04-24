@@ -17,7 +17,7 @@ export default function(sequelize) {
       unique: true,
     },
     type: {
-      type: DataTypes.ENUM('country', 'region', 'zone', 'district', 'ward', 'street'),
+      type: DataTypes.ENUM('country', 'region', 'cpp', 'extension', 'zone', 'district', 'ward', 'village', 'street'),
       allowNull: false,
     },
     parentId: {

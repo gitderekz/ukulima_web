@@ -1,11 +1,10 @@
-
-// --->backend/models/transport.js (Modified)
 import { DataTypes } from 'sequelize';
 
 export default function(sequelize) {
   const Transport = sequelize.define('Transport', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     receiptNumber: {
@@ -14,7 +13,7 @@ export default function(sequelize) {
       unique: true,
     },
     rebaleId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: true,
       references: {
         model: 'rebales',
@@ -88,24 +87,6 @@ export default function(sequelize) {
     },
     arrivalDate: {
       type: DataTypes.DATEONLY,
-      allowNull: true,
-    },
-    // Mobile sync tracking columns
-    originalDeviceId: {
-      type: DataTypes.STRING(20),
-      allowNull: true,
-    },
-    originalLocalId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-    },
-    syncSource: {
-      type: DataTypes.ENUM('web', 'mobile'),
-      allowNull: false,
-      defaultValue: 'web',
-    },
-    syncedAt: {
-      type: DataTypes.DATE,
       allowNull: true,
     },
   }, {
