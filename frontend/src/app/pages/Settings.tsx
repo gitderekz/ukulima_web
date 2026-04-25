@@ -257,6 +257,7 @@
 //     </div>
 //   );
 // }
+
 // frontend/src/app/pages/Settings.tsx
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
