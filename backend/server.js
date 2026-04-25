@@ -26,6 +26,7 @@ import transportsRoutes from './routes/transportsRoutes.js';
 import reportsRoutes from './routes/reportsRoutes.js';
 import balesRoutes from './routes/balesRoutes.js';
 import farmerLoansRoutes from './routes/farmerLoansRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js'; // 🔥 ADD THIS
 
 // Load environment variables
 dotenv.config();
@@ -86,6 +87,7 @@ app.use('/api/transports', transportsRoutes);
 app.use('/api/reports', reportsRoutes);
 app.use('/api/bales', balesRoutes);
 app.use('/api/farmer-loans', farmerLoansRoutes);
+app.use('/api/settings', settingsRoutes); // 🔥 ADD THIS
 
 // 404 handler
 app.use((req, res) => {

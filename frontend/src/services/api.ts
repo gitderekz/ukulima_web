@@ -91,6 +91,35 @@ export const authAPI = {
     }),
 };
 
+// Settings API
+export const settingsAPI = {
+  // Get all settings
+  getAll: () => fetchAPI('/settings'),
+
+  // Get specific setting by key
+  getByKey: (key: string) => fetchAPI(`/settings/${key}`),
+
+  // Create or update settings
+  create: (data: any) =>
+    fetchAPI('/settings', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+
+  // Update settings (PUT)
+  update: (data: any) =>
+    fetchAPI('/settings', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }),
+
+  // Reset settings to defaults
+  reset: () =>
+    fetchAPI('/settings', {
+      method: 'DELETE',
+    }),
+};
+
 // Farmers API
 export const farmersAPI = {
   getAll: (locationId?: string) => {
