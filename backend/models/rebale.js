@@ -16,7 +16,7 @@ export default function(sequelize) {
     receiptNumber: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      // unique: true,
     },
     cropId: {
       type: DataTypes.INTEGER,

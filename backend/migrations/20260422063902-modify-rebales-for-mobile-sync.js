@@ -21,7 +21,7 @@ module.exports = {
       receiptNumber: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
+        // unique: true
       },
       cropId: {
         type: Sequelize.INTEGER,

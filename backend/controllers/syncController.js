@@ -1129,6 +1129,7 @@ export const uploadData = async (req, res) => {
 
     const errors = [];
 
+    console.log('all payload data:', req.body);
     // ==================== PROCESS PURCHASES ====================
     console.log('IMEFIKA-purchase: ',purchases);
     if (purchases.length > 0) {
@@ -1216,6 +1217,7 @@ export const uploadData = async (req, res) => {
       for (const rebale of rebales) {
         try {
           if (!isValidId(rebale.id)) {
+            console.log('imekataa rebale:',rebale.id);
             errors.push({ entity: 'rebales', id: rebale.id, error: 'Invalid ID format' });
             continue;
           }
@@ -1233,10 +1235,12 @@ export const uploadData = async (req, res) => {
               summary.skipped++;
             }
           } else {
+            console.log('Imefika kutengeneza:', rebale.id);
             await db.Rebale.create(sanitizeRecord(rebale, 'rebales'), { transaction });
             summary.rebales++;
           }
         } catch (error) {
+            console.log('error rebale:',rebale.id,' :ERROR: ',error);
           errors.push({ entity: 'rebales', id: rebale.id, error: error.message });
         }
       }
@@ -1328,6 +1332,118 @@ export const uploadData = async (req, res) => {
       console.log(`✅ TransportRebales: ${summary.transportRebales} created`);
     }
 
+    // // ==================== PROCESS FARMER LOANS ====================
+    // console.log('IMEFIKA-farmerLoans: ',farmerLoans);
+    // if (farmerLoans.length > 0) {
+    //   console.log(`📦 Processing ${farmerLoans.length} farmer loans...`);
+      
+    //   for (const loan of farmerLoans) {
+    //     try {
+    //       if (!isValidId(loan.id)) {
+    //         errors.push({ entity: 'farmerLoans', id: loan.id, error: 'Invalid ID format' });
+    //         continue;
+    //       }
+          
+    //       let farmerId = loan.farmerId;
+    //       if (String(farmerId).includes('-')) {
+    //         farmerId = extractLocalId(farmerId);
+    //         loan.farmerId = farmerId;
+    //       }
+    //       farmerId = Number(farmerId);
+    //       console.log('Farmer ID: ',farmerId),' -->Datatype : ', typeof farmerId;
+          
+    //       const existingLoan = await db.FarmerLoan.findByPk(loan.id, { transaction });
+          
+    //       if (existingLoan) {
+    //         const mobileUpdated = new Date(loan.updatedAt);
+    //         const serverUpdated = new Date(existingLoan.updatedAt);
+            
+    //         if (mobileUpdated > serverUpdated) {
+    //           const oldTotalAmount = existingLoan.totalAmount;
+    //           await existingLoan.update(sanitizeRecord(loan, 'farmerLoans'), { transaction });
+              
+    //           if (loan.totalAmount !== oldTotalAmount) {
+    //             const farmer = await db.Farmer.findByPk(farmerId, { transaction });
+    //             if (farmer) {
+    //               const debtDifference = loan.totalAmount - oldTotalAmount;
+    //               farmer.totalDebt = (farmer.totalDebt || 0) + debtDifference;
+    //               await farmer.save({ transaction });
+    //             }
+    //           }
+    //           summary.farmerLoans++;
+    //         } else {
+    //           summary.skipped++;
+    //         }
+    //       } else {
+    //         await db.FarmerLoan.create(sanitizeRecord(loan, 'farmerLoans'), { transaction });
+            
+    //         const farmer = await db.Farmer.findByPk(farmerId, { transaction });
+    //         if (farmer) {
+    //           farmer.totalDebt = (farmer.totalDebt || 0) + loan.totalAmount;
+    //           await farmer.save({ transaction });
+    //         }
+    //         summary.farmerLoans++;
+    //       }
+    //     } catch (error) {
+    //       errors.push({ entity: 'farmerLoans', id: loan.id, error: error.message });
+    //     }
+    //   }
+    //   console.log(`✅ FarmerLoans: ${summary.farmerLoans} created/updated`);
+    // }
+
+    // // ==================== PROCESS LOAN DEDUCTIONS ====================
+    // console.log('IMEFIKA-loanDeductions: ',loanDeductions);
+    // if (loanDeductions.length > 0) {
+    //   console.log(`📦 Processing ${loanDeductions.length} loan deductions...`);
+      
+    //   for (const deduction of loanDeductions) {
+    //     try {
+    //       let purchaseId = deduction.purchaseId;
+    //       let farmerLoanId = deduction.farmerLoanId;
+          
+    //       if (String(purchaseId).includes('-')) {
+    //         // purchaseId = extractLocalId(purchaseId);
+    //         // deduction.purchaseId = purchaseId;
+    //       }
+    //       if (String(farmerLoanId).includes('-')) {
+    //         // farmerLoanId = extractLocalId(farmerLoanId);
+    //         // deduction.farmerLoanId = farmerLoanId;
+    //       }
+          
+    //       const existing = await db.LoanDeduction.findOne({
+    //         where: { purchaseId, farmerLoanId },
+    //         transaction,
+    //       });
+          
+    //       if (!existing) {
+    //         await db.LoanDeduction.create(deduction, { transaction });
+            
+    //         const farmerLoan = await db.FarmerLoan.findByPk(farmerLoanId, { transaction });
+    //         if (farmerLoan) {
+    //           farmerLoan.remainingDebt = Math.max(0, (farmerLoan.remainingDebt || 0) - deduction.deductedAmount);
+    //           if (farmerLoan.remainingDebt <= 0) {
+    //             farmerLoan.status = 'completed';
+    //           }
+    //           await farmerLoan.save({ transaction });
+              
+    //           const farmer = await db.Farmer.findByPk(farmerLoan.farmerId, { transaction });
+    //           if (farmer) {
+    //             farmer.totalDebt = Math.max(0, (farmer.totalDebt || 0) - deduction.deductedAmount);
+    //             await farmer.save({ transaction });
+    //           }
+    //         }
+            
+    //         summary.loanDeductions++;
+    //       } else {
+    //         summary.skipped++;
+    //       }
+    //     } catch (error) {
+    //       errors.push({ entity: 'loanDeductions', error: error.message });
+    //     }
+    //   }
+    //   console.log(`✅ LoanDeductions: ${summary.loanDeductions} created`);
+    // }
+
     // ==================== PROCESS FARMER LOANS ====================
     console.log('IMEFIKA-farmerLoans: ',farmerLoans);
     if (farmerLoans.length > 0) {
@@ -1345,6 +1461,7 @@ export const uploadData = async (req, res) => {
             farmerId = extractLocalId(farmerId);
             loan.farmerId = farmerId;
           }
+          farmerId = Number(farmerId);
           
           const existingLoan = await db.FarmerLoan.findByPk(loan.id, { transaction });
           
@@ -1353,31 +1470,36 @@ export const uploadData = async (req, res) => {
             const serverUpdated = new Date(existingLoan.updatedAt);
             
             if (mobileUpdated > serverUpdated) {
-              const oldTotalAmount = existingLoan.totalAmount;
               await existingLoan.update(sanitizeRecord(loan, 'farmerLoans'), { transaction });
-              
-              if (loan.totalAmount !== oldTotalAmount) {
-                const farmer = await db.Farmer.findByPk(farmerId, { transaction });
-                if (farmer) {
-                  const debtDifference = loan.totalAmount - oldTotalAmount;
-                  farmer.totalDebt = (farmer.totalDebt || 0) + debtDifference;
-                  await farmer.save({ transaction });
-                }
-              }
               summary.farmerLoans++;
             } else {
               summary.skipped++;
             }
           } else {
             await db.FarmerLoan.create(sanitizeRecord(loan, 'farmerLoans'), { transaction });
-            
-            const farmer = await db.Farmer.findByPk(farmerId, { transaction });
-            if (farmer) {
-              farmer.totalDebt = (farmer.totalDebt || 0) + loan.totalAmount;
-              await farmer.save({ transaction });
-            }
             summary.farmerLoans++;
           }
+
+          // 🔥 FIX: Recalculate farmer totalDebt from ALL active loans after each change
+          // This ensures server value matches the sum of remainingDebt
+          const allActiveLoans = await db.FarmerLoan.findAll({
+            where: { farmerId: farmerId, status: 'active' },
+            attributes: ['remainingDebt'],
+            transaction,
+          });
+
+          const calculatedTotalDebt = allActiveLoans.reduce(
+            (sum, l) => sum + (parseFloat(l.remainingDebt) || 0), 
+            0
+          );
+
+          const farmer = await db.Farmer.findByPk(farmerId, { transaction });
+          if (farmer) {
+            farmer.totalDebt = calculatedTotalDebt;
+            await farmer.save({ transaction });
+            console.log(`📊 Farmer #${farmerId} totalDebt recalculated: TZS ${calculatedTotalDebt}`);
+          }
+
         } catch (error) {
           errors.push({ entity: 'farmerLoans', id: loan.id, error: error.message });
         }
@@ -1390,19 +1512,16 @@ export const uploadData = async (req, res) => {
     if (loanDeductions.length > 0) {
       console.log(`📦 Processing ${loanDeductions.length} loan deductions...`);
       
+      // Track which farmers need debt recalculation
+      const affectedFarmers = new Set();
+      
       for (const deduction of loanDeductions) {
         try {
           let purchaseId = deduction.purchaseId;
           let farmerLoanId = deduction.farmerLoanId;
           
-          if (String(purchaseId).includes('-')) {
-            // purchaseId = extractLocalId(purchaseId);
-            // deduction.purchaseId = purchaseId;
-          }
-          if (String(farmerLoanId).includes('-')) {
-            // farmerLoanId = extractLocalId(farmerLoanId);
-            // deduction.farmerLoanId = farmerLoanId;
-          }
+          // Keep global IDs as-is (they reference mobile-created records)
+          // The server uses these to find the correct records
           
           const existing = await db.LoanDeduction.findOne({
             where: { purchaseId, farmerLoanId },
@@ -1412,19 +1531,20 @@ export const uploadData = async (req, res) => {
           if (!existing) {
             await db.LoanDeduction.create(deduction, { transaction });
             
+            // Update farmer loan remaining debt
             const farmerLoan = await db.FarmerLoan.findByPk(farmerLoanId, { transaction });
             if (farmerLoan) {
-              farmerLoan.remainingDebt = Math.max(0, (farmerLoan.remainingDebt || 0) - deduction.deductedAmount);
+              farmerLoan.remainingDebt = Math.max(
+                0, 
+                (parseFloat(farmerLoan.remainingDebt) || 0) - parseFloat(deduction.deductedAmount)
+              );
               if (farmerLoan.remainingDebt <= 0) {
                 farmerLoan.status = 'completed';
               }
               await farmerLoan.save({ transaction });
               
-              const farmer = await db.Farmer.findByPk(farmerLoan.farmerId, { transaction });
-              if (farmer) {
-                farmer.totalDebt = Math.max(0, (farmer.totalDebt || 0) - deduction.deductedAmount);
-                await farmer.save({ transaction });
-              }
+              // Track this farmer for recalculation
+              affectedFarmers.add(farmerLoan.farmerId);
             }
             
             summary.loanDeductions++;
@@ -1435,7 +1555,45 @@ export const uploadData = async (req, res) => {
           errors.push({ entity: 'loanDeductions', error: error.message });
         }
       }
-      console.log(`✅ LoanDeductions: ${summary.loanDeductions} created`);
+
+      // 🔥 FIX: Recalculate farmer totalDebt from ALL active loans (not add/subtract)
+      for (const farmerId of affectedFarmers) {
+        const allActiveLoans = await db.FarmerLoan.findAll({
+          where: { farmerId: farmerId, status: 'active' },
+          attributes: ['remainingDebt'],
+          transaction,
+        });
+
+        const calculatedTotalDebt = allActiveLoans.reduce(
+          (sum, l) => sum + (parseFloat(l.remainingDebt) || 0), 
+          0
+        );
+
+        const farmer = await db.Farmer.findByPk(farmerId, { transaction });
+        if (farmer) {
+          // Also include completed loans that still have remainingDebt > 0 (edge case)
+          const completedLoansWithDebt = await db.FarmerLoan.findAll({
+            where: { 
+              farmerId: farmerId, 
+              status: 'completed',
+              remainingDebt: { [Op.gt]: 0 }
+            },
+            attributes: ['remainingDebt'],
+            transaction,
+          });
+          
+          let finalDebt = calculatedTotalDebt;
+          for (const l of completedLoansWithDebt) {
+            finalDebt += parseFloat(l.remainingDebt) || 0;
+          }
+
+          farmer.totalDebt = Math.max(0, finalDebt);
+          await farmer.save({ transaction });
+          console.log(`📊 Farmer #${farmerId} totalDebt recalculated after deductions: TZS ${farmer.totalDebt}`);
+        }
+      }
+      
+      console.log(`✅ LoanDeductions: ${summary.loanDeductions} created, ${affectedFarmers.size} farmers updated`);
     }
 
     // Calculate total

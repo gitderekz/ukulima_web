@@ -40,6 +40,10 @@ npx sequelize-cli db:seed:undo
 # Undo all seeds
 npx sequelize-cli db:seed:undo:all
 
+====================================================================
+SHOW INDEX FROM rebales;
+ALTER TABLE rebales DROP INDEX receiptNumber;
+
 ===================================================================
 git init
 git add .
