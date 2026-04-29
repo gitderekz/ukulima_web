@@ -47,8 +47,9 @@ ALTER TABLE rebales DROP INDEX receiptNumber;
 ===================================================================
 git init
 git add .
-git add .
 git remote add origin https://github.com/your-username/your-repo.git
+git remote remove origin
+git remote add origin https://github.com/gitderekz/northtek.git
 --------------------------
 git branch -M main
 --------------------------

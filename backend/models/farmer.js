@@ -5,7 +5,8 @@ import { DataTypes } from 'sequelize';
 export default function(sequelize) {
   const Farmer = sequelize.define('Farmer', {
     id: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
     },
     firstName: {

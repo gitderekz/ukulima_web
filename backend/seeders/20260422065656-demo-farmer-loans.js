@@ -7,7 +7,7 @@ module.exports = {
     await queryInterface.bulkInsert('farmer_loans', [
       { 
         id: '1', 
-        farmerId: '3', 
+        farmerId: 3, 
         loanId: 1, 
         quantity: 5, 
         totalAmount: 250000, 
@@ -20,7 +20,7 @@ module.exports = {
       },
       { 
         id: '2', 
-        farmerId: '5', 
+        farmerId: 5, 
         loanId: 2, 
         quantity: 3, 
         totalAmount: 120000, 
@@ -33,7 +33,7 @@ module.exports = {
       },
       { 
         id: '3', 
-        farmerId: '1', 
+        farmerId: 1, 
         loanId: 1, 
         quantity: 4, 
         totalAmount: 200000, 

@@ -19,12 +19,14 @@ module.exports = {
         unique: true
       },
       farmerId: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'farmers',
           key: 'id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       buyerId: {
         type: Sequelize.INTEGER,

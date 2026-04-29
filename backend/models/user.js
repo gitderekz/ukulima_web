@@ -23,7 +23,7 @@ export default function(sequelize) {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      // unique: true,
     },
     phone: {
       type: DataTypes.STRING,

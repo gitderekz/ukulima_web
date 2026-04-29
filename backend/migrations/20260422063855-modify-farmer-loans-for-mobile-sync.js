@@ -14,12 +14,14 @@ module.exports = {
         type: Sequelize.STRING(50)
       },
       farmerId: {
-        type: Sequelize.STRING(50),
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'farmers',
           key: 'id'
-        }
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       loanId: {
         type: Sequelize.INTEGER,

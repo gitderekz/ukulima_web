@@ -12,8 +12,9 @@ module.exports = {
     await queryInterface.createTable('farmers', {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.STRING(50)
+        type: Sequelize.INTEGER
       },
       firstName: {
         type: Sequelize.STRING,

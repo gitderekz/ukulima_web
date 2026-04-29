@@ -8,7 +8,7 @@ module.exports = {
       { 
         id: '1', 
         receiptNumber: 'PUR-2024-001', 
-        farmerId: '1', 
+        farmerId: 1, 
         buyerId: 2, 
         clerkId: 3, 
         warehouseId: 1, 
@@ -24,7 +24,7 @@ module.exports = {
       { 
         id: '2', 
         receiptNumber: 'PUR-2024-002', 
-        farmerId: '3', 
+        farmerId: 3, 
         buyerId: 2, 
         clerkId: 3, 
         warehouseId: 1, 
@@ -40,7 +40,7 @@ module.exports = {
       { 
         id: '3', 
         receiptNumber: 'PUR-2024-003', 
-        farmerId: '4', 
+        farmerId: 4, 
         buyerId: 2, 
         clerkId: 4, 
         warehouseId: 2, 
@@ -56,7 +56,7 @@ module.exports = {
       { 
         id: '4', 
         receiptNumber: 'PUR-2024-004', 
-        farmerId: '5', 
+        farmerId: 5, 
         buyerId: 2, 
         clerkId: 3, 
         warehouseId: 1, 
@@ -72,7 +72,7 @@ module.exports = {
       { 
         id: '5', 
         receiptNumber: 'PUR-2024-005', 
-        farmerId: '2', 
+        farmerId: 2, 
         buyerId: 2, 
         clerkId: 4, 
         warehouseId: 3, 

@@ -212,7 +212,7 @@ export const getFarmerById = async (req, res) => {
 // POST /api/farmers - Create a new farmer
 export const createFarmer = async (req, res) => {
   try {
-    const { firstName, lastName, phone, locationId, email } = req.body;
+    const { firstName, lastName, phone, locationId, email, cppId, extensionId } = req.body;
     
     // Validation
     if (!firstName || !lastName || !phone || !locationId) {
@@ -243,13 +243,15 @@ export const createFarmer = async (req, res) => {
     const farmerCode = `FRM-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
     
     const farmer = await db.Farmer.create({
-      id: uuidv4(),
+      // id: uuidv4(),
       firstName,
       lastName,
       phone,
       email,
       code: farmerCode,
       locationId,
+      cppId: cppId || null,
+      extensionId: extensionId || null,
       loanBalance: 0,
       totalLoanAmount: 0,
     });

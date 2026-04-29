@@ -5,7 +5,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('farmers', [
       { 
-        id: '1',
+        // id: '1',
         firstName: 'John',
         lastName: 'Makonde',
         code: 'F001',
@@ -28,7 +28,7 @@ module.exports = {
       },
 
       { 
-        id: '2',
+        // id: '2',
         firstName: 'Maria',
         lastName: 'Mushi',
         code: 'F002',
@@ -50,7 +50,7 @@ module.exports = {
       },
 
       { 
-        id: '3',
+        // id: '3',
         firstName: 'Peter',
         lastName: 'Shayo',
         code: 'F003',
@@ -72,7 +72,7 @@ module.exports = {
       },
 
       { 
-        id: '4',
+        // id: '4',
         firstName: 'Grace',
         lastName: 'Mwakipesile',
         code: 'F004',
@@ -94,7 +94,7 @@ module.exports = {
       },
 
       { 
-        id: '5',
+        // id: '5',
         firstName: 'James',
         lastName: 'Lyimo',
         code: 'F005',

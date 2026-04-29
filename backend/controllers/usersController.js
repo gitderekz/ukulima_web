@@ -123,17 +123,24 @@ export const getUsersByRole = async (req, res) => {
 export const createUser = async (req, res) => {
   try {
     const {
-      username,
+      // username,
       email,
       password,
       firstName,
       lastName,
+      phone,
+      isActive,
+      code,
       roleId,
       locationId,
+      cppId,
+      extensionId,
       warehouseId,
     } = req.body;
 
-    if (!username || !email || !password || !firstName || !lastName || !roleId) {
+    console.log('Creating user with data:', req.body);
+    if (/*!username ||*/ !email || !password || !firstName || !lastName || !roleId) {
+      console.log('IMESHINDWA');
       return res.status(400).json({
         success: false,
         message: 'Username, email, password, first name, last name, and role are required',
@@ -141,12 +148,13 @@ export const createUser = async (req, res) => {
     }
 
     // Check if username already exists
+    const username = `${firstName} ${lastName}`;
     const existingUser = await db.User.findOne({ where: { username } });
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'Username already exists',
-      });
+      // return res.status(400).json({
+      //   success: false,
+      //   message: 'Username already exists',
+      // });
     }
 
     // Check if email already exists
@@ -193,14 +201,19 @@ export const createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await db.User.create({
-      id: uuidv4(),
+      // id: uuidv4(),
       username,
+      phone,
       email,
       password: hashedPassword,
       firstName,
       lastName,
       roleId,
+      code,
+      role: role.name,
       locationId: locationId || null,
+      cppId: cppId || null,
+      extensionId: extensionId || null,
       warehouseId: warehouseId || null,
       active: true,
     });
