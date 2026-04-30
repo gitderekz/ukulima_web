@@ -976,7 +976,7 @@ export const downloadData = async (req, res) => {
     let userWhere = { isActive: true };
     if (user.role !== 'buyer' && user.role !== 'officer' && user.role !== 'Data Clerk') {
       userWhere.locationId = { [Op.in]: allLocationIds };
-    } else if (user.role === 'buyer') {
+    } else if (user.role === 'buyer'||user.role === 'Data Clerk') {
       userWhere.cppId = { [Op.in]: [locationId] };
     } else if (user.role === 'officer') {
       userWhere.extensionId = { [Op.in]: [locationId] };
@@ -1031,7 +1031,7 @@ export const downloadData = async (req, res) => {
     let farmerWhere = {};
     if (user.role !== 'buyer' && user.role !== 'officer' && user.role !== 'Data Clerk') { //or !['buyer', 'officer'].includes(user.role)
       farmerWhere.locationId = { [Op.in]: allLocationIds };
-    } else if (user.role === 'buyer') {
+    } else if (user.role === 'buyer'||user.role === 'Data Clerk') {
       farmerWhere.cppId = { [Op.in]: [locationId] };
     } else if (user.role === 'officer') {
       farmerWhere.extensionId = { [Op.in]: [locationId] };
