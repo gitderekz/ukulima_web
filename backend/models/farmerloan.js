@@ -9,10 +9,18 @@ export default function(sequelize) {
       primaryKey: true,
     },
     farmerId: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'farmers',
+        key: 'id',
+      },
+    },
+    officerId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'users',
         key: 'id',
       },
     },

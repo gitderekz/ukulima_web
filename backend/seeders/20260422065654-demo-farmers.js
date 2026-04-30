@@ -15,7 +15,7 @@ module.exports = {
         cppId: 4,
         extensionId: 19,
 
-        totalDebt: 0,
+        totalDebt: 200000,
 
         // Mobile sync tracking
         originalDeviceId: null,
@@ -60,7 +60,7 @@ module.exports = {
         cppId: 4,
         extensionId: 19,
 
-        totalDebt: 150000,
+        totalDebt: 6050000,
 
         originalDeviceId: null,
         originalLocalId: null,
@@ -104,7 +104,7 @@ module.exports = {
         cppId: 5,
         extensionId: 20,
 
-        totalDebt: 75000,
+        totalDebt: 4075000,
 
         originalDeviceId: null,
         originalLocalId: null,

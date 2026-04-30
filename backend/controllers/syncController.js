@@ -972,6 +972,16 @@ export const downloadData = async (req, res) => {
     // Get all child location IDs for filtering
     const allLocationIds = await getAllChildLocationIds(locationId);
 
+    // user where clause based on role
+    let userWhere = { isActive: true };
+    if (user.role !== 'buyer' && user.role !== 'officer' && user.role !== 'Data Clerk') {
+      userWhere.locationId = { [Op.in]: allLocationIds };
+    } else if (user.role === 'buyer') {
+      userWhere.cppId = { [Op.in]: [locationId] };
+    } else if (user.role === 'officer') {
+      userWhere.extensionId = { [Op.in]: [locationId] };
+    }
+
     // Fetch all reference data
     const [
       locations,
@@ -1008,14 +1018,31 @@ export const downloadData = async (req, res) => {
       }),
       db.User.findAll({
         attributes: { exclude: ['password'] },
-        where: { locationId: { [Op.in]: allLocationIds }, isActive: true },
+        // where: { locationId: { [Op.in]: allLocationIds }, isActive: true },
+        // where: { cppId: { [Op.in]: locationId }, isActive: true },
+        // where: { extensionId: { [Op.in]: locationId }, isActive: true },
+        where: userWhere,
         order: [['firstName', 'ASC']],
       }),
     ]);
 
+
+    // farmers where clause based on role
+    let farmerWhere = {};
+    if (user.role !== 'buyer' && user.role !== 'officer' && user.role !== 'Data Clerk') { //or !['buyer', 'officer'].includes(user.role)
+      farmerWhere.locationId = { [Op.in]: allLocationIds };
+    } else if (user.role === 'buyer') {
+      farmerWhere.cppId = { [Op.in]: [locationId] };
+    } else if (user.role === 'officer') {
+      farmerWhere.extensionId = { [Op.in]: [locationId] };
+    }
+
     // Fetch farmers - filtered by location hierarchy
     const farmers = await db.Farmer.findAll({
-      where: { locationId: { [Op.in]: allLocationIds } },
+      // where: { locationId: { [Op.in]: allLocationIds } },
+      // where: { cppId: { [Op.in]: locationId } },
+      // where: { extensionId: { [Op.in]: locationId } },
+      where: farmerWhere,
       include: [
         {
           model: db.Location,
