@@ -632,6 +632,7 @@
 // };
 import { db } from '.././models/index.js';
 import { Op } from 'sequelize';
+import { v4 as uuidv4 } from 'uuid';
 
 // Get all transports
 export const getAllTransports = async (req, res) => {
@@ -812,6 +813,7 @@ export const createTransport = async (req, res) => {
 
     // Create transport
     const newTransport = await db.Transport.create({
+      id: uuidv4(),
       receiptNumber,
       driverName,
       driverPhone,
@@ -831,6 +833,7 @@ export const createTransport = async (req, res) => {
     // Create TransportRebale entries for each rebale
     if (newTransport && rebaleIds.length > 0) {
       const transportRebaleEntries = rebaleIds.map(rebaleId => ({
+        id: uuidv4(),
         transportId: newTransport.id,
         rebaleId: rebaleId,
         loadedAt: new Date(),
@@ -844,9 +847,9 @@ export const createTransport = async (req, res) => {
         { where: { id: rebaleIds } }
       );
     }
-console.log('Transport created with ID:', newTransport.id);
-const x = await db.Transport.findByPk(newTransport.id);
-console.log('Transport created with ID:', x.length);
+    console.log('Transport created with ID:', newTransport.id);
+    const x = await db.Transport.findByPk(newTransport.id);
+    console.log('Transport created with ID:', x.length);
 
 
     // Fetch the created transport with associated rebales

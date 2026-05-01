@@ -336,12 +336,12 @@ export default function Buying() {
           bales:accumulatedBales,
           receiptNumber,
           totalMass,
-          totalDebt:activeLoan.totalAmount,
-          remainingDebt:activeLoan.remainingDebt,
+          totalDebt:activeLoan?.totalAmount??0,
+          remainingDebt:activeLoan?.remainingDebt??0,
         });
         console.log('selectedFarmer: ',fm);
-        console.log('totalDebt: ',activeLoan.totalAmount);
-        console.log('remainingDebt: ',activeLoan.remainingDebt);
+        console.log('totalDebt: ',activeLoan?.totalAmount??0);
+        console.log('remainingDebt: ',activeLoan?.remainingDebt??0);
         
         
         // Reset form

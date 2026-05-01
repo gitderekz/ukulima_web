@@ -13,7 +13,8 @@ export interface Role {
 }
 
 // Location Types (hierarchical)
-export type LocationType = 'zone' | 'cpp' | 'region' | 'district' | 'ward' | 'street';
+// export type LocationType = 'zone' | 'cpp' | 'region' | 'district' | 'ward' | 'street';
+export type LocationType = 'country' | 'region' | 'cpp' | 'extension' | 'zone' | 'district' | 'ward' | 'village' | 'street';
 
 export interface Location {
   id: string;

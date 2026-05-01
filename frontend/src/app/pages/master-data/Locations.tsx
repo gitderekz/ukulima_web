@@ -148,7 +148,8 @@ export default function Locations() {
     ));
   };
 
-  const typeOrder: LocationType[] = ['zone', 'cpp', 'region', 'district', 'ward', 'street'];
+  // const typeOrder: LocationType[] = ['zone', 'cpp', 'region', 'district', 'ward', 'street'];
+  const typeOrder: LocationType[] = ['country', 'region', 'cpp', 'extension', 'zone', 'district', 'ward', 'village', 'street'];
   const getParentTypeOptions = (selectedType: LocationType) => {
     const currentIndex = typeOrder.indexOf(selectedType);
     if (currentIndex <= 0) return [];
@@ -161,8 +162,8 @@ export default function Locations() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Locations</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Manage hierarchical locations (Street → Ward → District → Region → CPP → Zone)</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Locations</h1>          
+          <p className="text-gray-600 dark:text-gray-400 mt-1">Manage hierarchical locations (Street → Village → Ward → District → Zone → Extension → CPP → Region → Country)</p>
         </div>
         <button onClick={() => handleOpenModal()} className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold flex items-center gap-2"><Plus className="w-5 h-5" />Add Location</button>
       </div>
@@ -200,11 +201,14 @@ export default function Locations() {
               <div>
                 <label className="block text-sm font-medium mb-2">Type</label>
                 <select value={formData.type} onChange={(e) => setFormData({ ...formData, type: e.target.value as LocationType, parentId: '' })} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border rounded-lg">
-                  <option value="zone">Zone (Top Level)</option>
-                  <option value="cpp">CPP</option>
+                  <option value="country">Country (Top Level)</option>
                   <option value="region">Region</option>
+                  <option value="cpp">CPP</option>
+                  <option value="extension">Extension</option>
+                  <option value="zone">Zone (Top Level)</option>
                   <option value="district">District</option>
                   <option value="ward">Ward</option>
+                  <option value="village">Village</option>
                   <option value="street">Street (Lowest Level)</option>
                 </select>
               </div>

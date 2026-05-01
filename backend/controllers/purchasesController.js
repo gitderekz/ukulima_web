@@ -406,7 +406,7 @@ export const createPurchase = async (req, res) => {
 
     const purchase = await db.Purchase.create(
       {
-        // id: uuidv4(),
+        id: uuidv4(),
         farmerId,
         buyerId,
         warehouseId,
@@ -430,7 +430,7 @@ export const createPurchase = async (req, res) => {
     for (const bale of bales) {
       await db.Bale.create(
         {
-          // id: uuidv4(),
+          id: uuidv4(),
           purchaseId: purchase.id,
           baleTag: bale.baleTag,
           cropId: bale.cropId,
@@ -495,7 +495,7 @@ export const createPurchase = async (req, res) => {
 
       await db.LoanDeduction.create(
         {
-          // id: uuidv4(),
+          id: uuidv4(),
           purchaseId: purchase.id,
           farmerLoanId: farmerLoanId,
           deductedAmount: safeDeduction,

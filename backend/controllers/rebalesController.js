@@ -883,6 +883,7 @@
 // };
 import { db } from '.././models/index.js';
 import { Op } from 'sequelize';
+import { v4 as uuidv4 } from 'uuid';
 
 // Get all rebales
 export const getAllRebales = async (req, res) => {
@@ -998,7 +999,7 @@ export const getRebaleById = async (req, res) => {
 // Create single rebale
 export const createRebale = async (req, res) => {
   try {
-    const { cropId, gradeId, totalMass, price, warehouseId, sourceBaleIds } = req.body;
+    const { cropId, gradeId, totalMass, price, warehouseId, sourceBaleIds, rebaleTag } = req.body;
 
     if (!cropId || !gradeId || !totalMass || !price) {
       return res.status(400).json({
@@ -1038,10 +1039,11 @@ export const createRebale = async (req, res) => {
 
     const buyerId = req.user.id;
     const totalAmount = totalMass * price;
-    const rebaleTag = `RB-${Date.now()}`;
+    // const rebaleTag = `RB-${Date.now()}`;
 
     // Create the rebale
     const newRebale = await db.Rebale.create({
+      id: uuidv4(),
       rebaleTag,
       cropId,
       gradeId,
@@ -1057,6 +1059,7 @@ export const createRebale = async (req, res) => {
     // Create RebaleBale associations if source bales provided
     if (sourceBaleIds && sourceBaleIds.length > 0) {
       const rebaleBaleEntries = sourceBaleIds.map(baleId => ({
+        id: uuidv4(),
         rebaleId: newRebale.id,
         baleId: parseInt(baleId),
       }));
@@ -1128,6 +1131,7 @@ export const createBatchRebales = async (req, res) => {
 
       // Create the rebale
       const created = await db.Rebale.create({
+        id: uuidv4(),
         rebaleTag,
         receiptNumber,
         cropId: rebaleData.cropId,
@@ -1140,10 +1144,13 @@ export const createBatchRebales = async (req, res) => {
         rebaleDate: new Date(),
         status: 'stored',
       });
+      console.log('REbale created: ', i, created.id);
 
       // Create RebaleBale associations if source bales provided
       if (rebaleData.sourceBaleIds && rebaleData.sourceBaleIds.length > 0) {
         const rebaleBaleEntries = rebaleData.sourceBaleIds.map(baleId => ({
+          id: uuidv4(),
+          syncSource:'web',
           rebaleId: created.id,
           baleId: parseInt(baleId),
         }));

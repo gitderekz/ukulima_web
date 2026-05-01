@@ -1,4 +1,5 @@
 import { db } from '../models/index.js';
+import { v4 as uuidv4 } from 'uuid';
 
 // Get all farmer loans
 export const getAllFarmerLoans = async (req, res) => {
@@ -115,8 +116,12 @@ export const createFarmerLoan = async (req, res) => {
       });
     }
 
+    const officerId = req.user.id;
+
     const newFarmerLoan = await db.FarmerLoan.create({
+      id: uuidv4(),
       farmerId,
+      officerId,
       loanId,
       quantity,
       totalAmount,
